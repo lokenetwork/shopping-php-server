@@ -11,3 +11,13 @@ The php server of hybird_shopping_app.
 The hybird client link is here:
 
 https://github.com/lokenetwork/hybird_shopping_app
+
+![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/hot-page.png)
+ ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/goods-detail-1.png)
+ ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/goods-detail-2.png)
+ ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/goods-detail-3.png)
+ 
+ ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/confirm-order-1.png)
+ ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/confirm-order-2.png)
+ 
+ ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/order-list.png)
