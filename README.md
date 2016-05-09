@@ -21,3 +21,19 @@ https://github.com/lokenetwork/hybird_shopping_app
  ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/confirm-order-2.png)
  
  ![image](https://github.com/lokenetwork/hybird_shopping_app/blob/master/demo-picture/order-list.png)
+
+# The whole shopping system code link
+
+https://github.com/lokenetwork/admin-shopping
+
+https://github.com/lokenetwork/shop-manage
+
+https://github.com/lokenetwork/shopping-php-server
+
+https://github.com/lokenetwork/shopping-chat-server
+
+https://github.com/lokenetwork/hybird_shopping_app
+
+https://github.com/lokenetwork/passport-shopping-system
+
+https://github.com/lokenetwork/shopkeeper_ionic_client
