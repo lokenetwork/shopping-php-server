@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="Expires" CONTENT="0">
+
+  <meta http-equiv="Cache-Control" CONTENT="no-cache">
+
+  <meta http-equiv="Pragma" CONTENT="no-cache">
+  <title> <?= $_title ?></title>
+  <link rel="<?= $css_rel ?>" type="text/css" href="/static/common_css/common.<?= $css_type ?>">
+  <style type="text/css" href="/static/wangEditor/wangEditor-fullscreen-plugin.css"></style>
+  <link rel="<?= $css_rel ?>" type="text/css" href="/application/views/goods/edit.<?= $css_type ?>">
+  <style>
+    .input-group-btn:last-child > .btn{
+      border-radius: 4px !important;
+    }
+    .full_screen{
+      position:fixed;left:0px;top:0px;width:100%; height:800px;
+    }
+
+  </style>
+</head>
+<body class="blank">
+<?php include(VIEW_PATH.'common/top_common_include.html'); ?>
+<div id="right_content" class="container-fluid">
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12 .col-md-offset-3">
+        <div class="hpanel">
+          <div class="panel-heading">
+            <?= $_title ?>
+          </div>
+          <div class="panel-body">
+
+            <form id="goodsForm" action="/Goods/editPost" method="post" class="form-horizontal" onsubmit="return ($.CheckGoodsFrom.CheckAll())">
+              <input type="hidden" name="goods_id" value="<?= $_GET['id'] ?>">
+              <input type="hidden" name="del_sku_id" value="">
+              <div class="form-group">
+                <label class="col-sm-2 control-label ">商品分类<span class="text-danger">(必填)</span></label>
+                <div class="col-sm-10 control-label">
+                  <div class="row text-left">
+                    <div class="col-sm-12">
+                      <?php include(VIEW_PATH.'common/select_category_4.html'); ?>
+                      <!--
+                      <a href="http://baidu.com" class="col-xs-offset-1" onClick="return confirm('确定要修改分类吗?');" >修改商品分类</a>
+                      -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">商品名称<span class="text-danger">(必填)</span></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" value="<?= $g_info['goods_name'] ?>" name="goods_name" required placeholder="请输入商品名称">
+                </div>
+              </div>
+
+              <div class="form-group" id="spec_value_form_group">
+                <label class="col-sm-2 control-label">商品规格信息<span class="text-danger">(必填)</span></label>
+                <div class="col-sm-10">
+
+                  <table class="table table-bordered top_offset_1 text-center table-hover">
+                    <thead>
+                    <tr>
+                      <th class="text-center">尺码</th>
+                      <th class="text-center">颜色</th>
+
+                      <th class="text-center">价格(<span class="text-info">¥</span>)</th>
+                      <th class="text-center">库存</th>
+                      <th class="text-center">商品编码</th>
+                      <th class="text-center">sku图片<span class="text-danger">(必填)</span></th>
+                      <th class="text-center">删除sku</th>
+                    </tr>
+                    </thead>
+                    <tbody id="spec_tbody" class="">
+                    <?php foreach($sku as $key=>$item): ?>
+                      <tr class="hybird_spec_row">
+                      <td>
+                        <input type="text" name="goods_sku[<?= $key ?>][size]" value="<?= $item['size'] ?>" required
+                               class="form-control" placeholder="请输入尺码">
+                        <input type="hidden" name="goods_sku[<?= $key ?>][sku_id]" value="<?= $item['sku_id'] ?>">
+                      </td>
+                      <td>
+                        <input type="text" name="goods_sku[<?= $key ?>][color]" value="<?= $item['color'] ?>" required class="form-control" placeholder="请输入颜色">
+                      </td>
+                      <td>
+                        <input type="text" name="goods_sku[<?= $key ?>][price]" value="<?= $item['sku_price'] ?>" required class="form-control"
+                               placeholder="请输入商品价格">
+                      </td>
+
+                      <td>
+                        <input type="number" name="goods_sku[<?= $key ?>][store]" value="<?= $item['sku_num'] ?>" required class="form-control"
+                               placeholder="请输入商品库存">
+                      </td>
+                      <td>
+                        <input type="text" name="goods_sku[<?= $key ?>][code]" class="form-control" value="<?= $item['sku_code'] ?>"
+                               placeholder="请输入商品编码">
+                      </td>
+                      <td>
+                        <div class="thumbnail" >
+                          <img src="<?= $img_diaplay_domain.$item['pic_url'] ?>">
+                          <input type="hidden" class="sku_pic_id" hidden_required="1" required_tips="请上传sku图片" name="goods_sku[<?= $key ?>][pic_id]" value="<?= $item['pic_id'] ?>">
+                          <input type="hidden" class="sku_pic_url" name="goods_sku[<?= $key ?>][pic_url]" value="<?= $item['pic_url'] ?>">
+                        </div>
+                        <label class="input-group-btn">
+                          <span class="btn btn-primary" style="">
+                              <i class="glyphicon glyphicon-folder-open"></i>
+                              选择文件<input type="file" style="display: none;" multiple onchange="upload_sku_pic(this)">
+                          </span>
+                        </label>
+                      </td>
+                      <td>
+                        <?php if( 0 == $key): ?>
+                        <i class="icon-remove-sign btn btn-danger" onclick="alert('原始sku不可删除')" >
+                        </i>
+                        <?php else: ?>
+                        <i class="icon-remove-sign btn btn-danger" onclick="del_sku(this,'<?= $item["sku_id"] ?>')" title="删除sku">
+                        </i>
+                        <?php endif;?>
+                      </td>
+                    </tr>
+                    <?php endforeach; ?>
+
+
+                    <tr class="hybird_spec_row" id="add_sku">
+                      <td colspan="7" >
+                        <button class="btn btn-primary " type="button" onclick="add_sku()">增加sku</button>
+                      </td>
+                    </tr>
+
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+
+
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">
+                  商品主图<span class="text-danger">(必填)</span>
+                </label>
+                <div class="col-sm-10">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <label class="input-group-btn">
+                        <span class="btn btn-primary" >
+                            <i class="glyphicon glyphicon-folder-open"></i>  
+                            选择文件<input type="file" id="main_pic" style="display: none;" multiple onchange="upload_main_pic(this)">
+                        </span>
+                        <input type="hidden" name="main_pic_id" hidden_required="1" required_tips="请上传商品主图"  value="<?= $g_info['first_picture_id'] ?>">
+                        <input type="hidden" name="main_pic_url" value="<?= $g_info['first_picture'] ?>">
+                      </label>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="help-block">
+                      </div>
+                      <div class="fileupload-preview thumbnail collapse" id="main_pic_display_dic" >
+                        <img id="main_pic_display" src="<?= $img_diaplay_domain.$g_info['first_picture'] ?>">
+                      </div>
+                      <span class="help-block">商品图片尺寸建议 800*800</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">商品图片<span class="text-warning">(选填)</span></label>
+                <div class="col-sm-10">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <label class="input-group-btn">
+                        <span class="btn btn-primary" >
+                            <i class="glyphicon glyphicon-folder-open"></i>  
+                            选择文件<input type="file" id="goods_pic" style="display: none;" multiple onchange="upload_pic(this)">
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <hr style="border-color:#fff;" />
+                  <div class="row can_remove_list">
+
+                    <?php foreach($g_img as $key=>$item): ?>
+                    <div class="col-sm-2" >
+                      <i class="fa icon-remove-sign _fa_times pull-right btn btn-danger" onclick="del_pic(this)" title="删除图片">
+                      </i>
+                      <i class="fa fa-times-circle" aria-hidden="true"></i>
+                      <div class="thumbnail">
+                        <img src="<?= $img_diaplay_domain.$item['pic_url'] ?>">
+                      </div>
+                      <input type="hidden" name="pic_id[<?= $item['pic_id'] ?>]" value="<?= $item['pic_id'] ?>">
+                      <input type="hidden" name="pic_url[<?= $item['pic_id'] ?>]" value="<?= $item['pic_url'] ?>">
+                    </div>
+                    <?php endforeach; ?>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">商品介绍</label>
+                <div class="col-sm-10">
+                  <div id="editor" class="">
+                    <?= $intro ?>
+                  </div>
+                </div>
+                <input type="hidden" name="intro" value="">
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">商品上架</label>
+                <div class="col-sm-5">
+                  <label class="radio-inline">
+                    <input type="radio" name="is_on_sale"  value="1" <?php if( $g_info['is_on_sale'] ): ?>checked<?php endif;?> > 是
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="is_on_sale"  value="0" <?php if( !$g_info['is_on_sale'] ): ?>checked<?php endif;?>  > 否
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">新品</label>
+                <div class="col-sm-5">
+                  <label class="radio-inline">
+                    <input type="radio" name="is_new"  value="1" <?php if( $g_info['is_new'] ): ?>checked<?php endif;?> > 是
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="is_new"  value="0" <?php if( !$g_info['is_new'] ): ?>checked<?php endif;?> > 否
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">热销</label>
+                <div class="col-sm-5">
+                  <label class="radio-inline">
+                    <input type="radio" name="is_hot" value="1" <?php if( $g_info['is_hot'] ): ?>checked<?php endif;?> > 是
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="is_hot" value="0" <?php if( !$g_info['is_hot'] ): ?>checked<?php endif;?> > 否
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">特价</label>
+                <div class="col-sm-5">
+                  <label class="radio-inline">
+                    <input type="radio" name="is_cheap"  value="1" <?php if( $g_info['is_cheap'] ): ?>checked<?php endif;?> > 是
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="is_cheap"  value="0" <?php if( !$g_info['is_cheap'] ): ?>checked<?php endif;?> > 否
+                  </label>
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <button class="btn btn-default btn-lg" type="button" onclick="history.go(-1);">取消</button>
+                  <button class="btn btn-primary col-xs-offset-1 btn-lg" id="submit_btn" type="submit">确定添加商品</button>
+                </div>
+              </div>
+            </form>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="demo_html_pic" style="display:none">
+  <div class="col-sm-2" >
+    <i class="fa icon-remove-sign _fa_times pull-right btn btn-danger" onclick="del_pic(this)" title="删除图片">
+    </i>
+    <i class="fa fa-times-circle" aria-hidden="true"></i>
+    <div class="thumbnail">
+      <img src="%s">
+    </div>
+    <input type="hidden" name="pic_id[%s]" value="%s">
+    <input type="hidden" name="pic_url[%s]" value="%s">
+  </div>
+</div>
+<table style="display:none">
+  <tbody id="demo_html_hybird_spec_row">
+  <tr class="hybird_spec_row" >
+    <td>
+      <input type="text" required name="goods_sku[sku_index][size]" class="form-control" placeholder="请输入尺码">
+    </td>
+    <td>
+      <input type="text" required name="goods_sku[sku_index][color]" class="form-control" placeholder="请输入颜色">
+    </td>
+    <td>
+      <input type="text" required name="goods_sku[sku_index][price]" class="form-control"
+             placeholder="请输入商品价格">
+    </td>
+
+    <td>
+      <input type="number" name="goods_sku[sku_index][store]" class="form-control"
+             placeholder="请输入商品库存">
+    </td>
+    <td>
+      <input type="text" name="goods_sku[sku_index][code]" class="form-control"
+             placeholder="请输入商品编码">
+    </td>
+    <td>
+      <div class="thumbnail" style="display:none">
+        <img src="">
+        <input type="hidden" class="sku_pic_id" hidden_required="1" required_tips="请上传sku图片"  name="goods_sku[sku_index][pic_id]">
+        <input type="hidden" class="sku_pic_url" name="goods_sku[sku_index][pic_url]">
+      </div>
+      <label class="input-group-btn">
+            <span class="btn btn-primary" style="">
+                <i class="glyphicon glyphicon-folder-open"></i>  
+                选择文件<input type="file" style="display: none;" multiple onchange="upload_sku_pic(this)">
+            </span>
+      </label>
+    </td>
+    <td>
+      <i class="icon-remove-sign btn btn-danger" onclick="del_sku(this,0)" >
+      </i>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+</body>
+<script>
+
+</script>
+<script src="/static/common_js/sprintf.js"></script>
+<script src="/application/views/goods/add.js"></script>
+<script type="text/javascript" src="/static/wangEditor/wangEditor.js"></script>
+<script type="text/javascript" src="/static/wangEditor/wangEditor-fullscreen-plugin.js"></script>
+<script type="text/javascript">
+
+  var img_upload_domain = "<?= $img_upload_domain ?>";
+  var img_diaplay_domain = "<?= $img_diaplay_domain ?>";
+
+  var E = window.wangEditor
+  var editor = new E('#editor')
+  editor.customConfig.uploadImgServer = img_upload_domain+"Index/richUploadMultipleGoodsPicture";
+  editor.customConfig.zIndex = 100;
+
+  editor.create();
+  E.fullscreen.init('#editor');
+  document.getElementById('submit_btn').addEventListener('click', function () {
+    // 读取 html
+    $("input[name='intro']").val(editor.txt.html());
+
+  }, false)
+
+</script>
+<?php include(VIEW_PATH.'common/bottom.html'); ?>
+</html>
+

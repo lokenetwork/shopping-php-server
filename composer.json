@@ -1,0 +1,8 @@
+{
+    "require": {
+        "ezyang/htmlpurifier": "^4.10",
+        "katzgrau/klogger": "dev-master",
+        "firebase/php-jwt": "^5.0",
+        "lcobucci/jwt": "^3.2"
+    }
+}

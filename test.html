@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>wangEditor demo</title>
+</head>
+<body>
+<div id="editor" style="width:800px;">
+  <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+</div>
+
+<!-- 注意， 只需要引用 JS，无需引用任何 CSS ！！！-->
+<script src="/static/common_js/jquery-2.1.4.min.js"></script>
+<style type="text/css" href="/static/wangEditor/wangEditor-fullscreen-plugin.css"></style>
+<script type="text/javascript" src="/static/wangEditor/wangEditor.js"></script>
+<script type="text/javascript" src="/static/wangEditor/wangEditor-fullscreen-plugin.js"></script>
+<script type="text/javascript">
+  var E = window.wangEditor;
+  var editor = new E('#editor');
+  editor.create();
+  E.fullscreen.init('#editor');
+</script>
+</body>
+</html>

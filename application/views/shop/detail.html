@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title><?= $_title ?></title>
+  <link rel="<?= $css_rel ?>" type="text/css" href="/static/common_css/table_align_center.<?= $css_type ?>">
+</head>
+<body class="blank">
+<?php include(VIEW_PATH.'common/top_common_include.html'); ?>
+
+<!--详情表格样式-->
+<style>
+  .table_detail tr td{
+    border: 1px solid #ddd;
+    width:150px;
+  }
+</style>
+<div id="right_content" class="container-fluid">
+
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="hpanel">
+          <div class="panel-heading">
+            <?= $_title ?>
+          </div>
+          <div class="panel-body">
+            <form action="/Shop/editPost" method="post" class="form-horizontal">
+              <input type="hidden" name="province" value="<?= $shop_info['province'] ?>" >
+              <input type="hidden" name="city" value="<?= $shop_info['city'] ?>" >
+              <input type="hidden" name="address" value="<?= $shop_info['address'] ?>" >
+              <input type="hidden" name="address_display" value="<?= $shop_info['address_display'] ?>" >
+              <input type="hidden" name="longitude" value="<?= $shop_info['longitude'] ?>" >
+              <input type="hidden" name="latitude" value="<?= $shop_info['latitude'] ?>" >
+            <div class="form-group">
+                <label class="col-sm-2 control-label ">店铺ID:</label>
+                <div class="col-sm-10 control-label">
+                  <div class="row text-left">
+                    <div class="col-sm-12">
+                     <?= $shop_info['shop_id'] ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">店铺名称:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="shop_name" required value="<?= $shop_info['shop_name'] ?>" placeholder="请输入店铺名称">
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label ">店铺位置:</label>
+                <div class="col-sm-10 control-label">
+                  <div class="row text-left">
+                    <div class="col-sm-12">
+                      <span id="address_display"><?= $shop_info['address_display'] ?></span> &nbsp;<button class="btn btn-primary btn-xs" onclick="show_map()" type="button">修改</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">QQ:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="qq" value="<?= $shop_info['qq'] ?>" placeholder="请输入QQ">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">微信:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="wechat" value="<?= $shop_info['wechat'] ?>" placeholder="请输入微信号">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">手机:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="mobile" value="<?= $shop_info['mobile'] ?>" placeholder="请输入手机号">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">邮箱:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="email" value="<?= $shop_info['email'] ?>" placeholder="请输入邮箱">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">联系人:</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" name="contact" value="<?= $shop_info['contact'] ?>" placeholder="联系人">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label ">商品数量:</label>
+                <div class="col-sm-10 control-label">
+                  <div class="row text-left">
+                    <div class="col-sm-12">
+                      <?= $shop_info['goods_num'] ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label ">店铺创建时间:</label>
+                <div class="col-sm-10 control-label">
+                  <div class="row text-left">
+                    <div class="col-sm-12">
+                      <?= $shop_info['add_time'] ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label ">店铺最后修改时间:</label>
+                <div class="col-sm-10 control-label">
+                  <div class="row text-left">
+                    <div class="col-sm-12">
+                      <?= $shop_info['last_update_time'] ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <button class="btn btn-primary btn-lg" type="submit">保存修改</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull-right">
+      <?= $pagination ?>
+    </div>
+  </div>
+
+
+
+</div>
+
+<style>
+  #map_frame{
+    position:absolute;
+    top: 5%;
+    left:25%;;
+    border:10px solid #f1f3f6;
+    border-radius:5px;
+    height:90%;
+    width:50%;
+    z-index:10;
+    filter:alpha(opacity:100); opacity:1;
+    display:none;
+  }
+  #black_thing{
+    position:absolute; top: 0px; left: 0px; width:100%; height: 100%; background-color:#0f0f0f; filter:alpha(opacity:50); opacity:0.5;
+    display:none;
+  }
+</style>
+
+<div id="black_thing" onclick="hide_map()" >
+</div>
+<iframe src="/Shop/selectLocation" frameborder="0"  id="map_frame" name="map_frame" style=" ">
+</iframe>
+
+
+</body>
+<!--
+<script src="/application/views/shop/detail.js"></script>
+-->
+<script>
+  function choose_loaction(address_display,address,province,city,longitude,latitude) {
+    $("input[name='address_display']").val(address_display);
+    $("#address_display").html(address_display);
+    $("input[name='address']").val(address);
+    $("input[name='province']").val(province);
+    $("input[name='city']").val(city);
+    $("input[name='longitude']").val(longitude);
+    $("input[name='latitude']").val(latitude);
+
+    $("#black_thing").fadeOut();
+    $("#map_frame").fadeOut();
+
+    //map_frame.widows.searchByStationName();
+
+  }
+
+  function show_map() {
+    $("#black_thing").fadeIn();
+    $("#map_frame").fadeIn();
+    $("#map_frame")[0].contentWindow.searchByStationName(1);
+  }
+
+  function hide_map() {
+    $("#black_thing").fadeOut();
+    $("#map_frame").fadeOut();
+  }
+  
+</script>
+<?php include(VIEW_PATH.'common/bottom.html'); ?>
+</html>
+
