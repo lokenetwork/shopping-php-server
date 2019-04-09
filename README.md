@@ -1,19 +1,18 @@
 # 买买提接口服务器
 
-此项目采用 YAF 框架开发
+此项目采用 YAF 框架开发,JWT 做认证
 
-# The whole shopping system code link
 
-https://github.com/lokenetwork/hybird_shopping_app
+# 买买提平台关项目代码
 
-https://github.com/lokenetwork/shopkeeper_ionic_client
+客户端APP：https://github.com/lokenetwork/hybird_shopping_app
 
-https://github.com/lokenetwork/shopping-php-server
+PHP接口服务器：https://github.com/lokenetwork/shopping-php-server
 
-https://github.com/lokenetwork/shopping-chat-server
+GO聊天服务器：https://github.com/lokenetwork/shopping-chat-server
 
-https://github.com/lokenetwork/passport-shopping-system
+通行证服务器（单点登录）：https://github.com/lokenetwork/passport-shopping-system
 
-https://github.com/lokenetwork/shop-manage
+商家后台：https://github.com/lokenetwork/shop-manage
 
-https://github.com/lokenetwork/admin-shopping
+总平台后台：https://github.com/lokenetwork/admin-shopping
